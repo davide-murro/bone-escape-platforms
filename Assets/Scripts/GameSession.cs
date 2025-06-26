@@ -16,6 +16,8 @@ public class GameSession : MonoBehaviour
     Slider playerLifeSlider;
     TextMeshProUGUI playerCoinsTextbox;
 
+    public int savedHealthAmount = -1;  // not set by default
+
     // Awake is called once before the Start
     void Awake()
     {
@@ -25,14 +27,9 @@ public class GameSession : MonoBehaviour
         else DontDestroyOnLoad(gameObject);
 
         // player status
-        playerLivesTextbox = (GameObject.FindWithTag("LivesTextbox")).GetComponent<TextMeshProUGUI>();
-        playerLifeSlider = (GameObject.FindWithTag("LifeSlider")).GetComponent<Slider>();
-        playerCoinsTextbox = (GameObject.FindWithTag("CoinsTextbox")).GetComponent<TextMeshProUGUI>();
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
+        playerLivesTextbox = GameObject.FindWithTag("LivesTextbox").GetComponent<TextMeshProUGUI>();
+        playerLifeSlider = GameObject.FindWithTag("LifeSlider").GetComponent<Slider>();
+        playerCoinsTextbox = GameObject.FindWithTag("CoinsTextbox").GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -81,6 +78,7 @@ public class GameSession : MonoBehaviour
             Invoke(nameof(LoadNextLevel), levelLoadDelay);
         }
 
+        savedHealthAmount = FindFirstObjectByType<PlayerController>().GetHealthAmount();
     }
 
     // load next level
@@ -112,12 +110,12 @@ public class GameSession : MonoBehaviour
         FindFirstObjectByType<SceneSession>().ResetSceneSession();
         SceneManager.LoadScene("Game Over");
     }
+
     // reset game if you lose
     public void ResetGameSession()
     {
         Destroy(gameObject);
     }
-
 
     // add coin
     public void AddCoins(int amount)
@@ -130,5 +128,4 @@ public class GameSession : MonoBehaviour
     {
         playerLives += amount;
     }
-
 }

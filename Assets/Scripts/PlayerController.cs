@@ -1,6 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerParts
+{
+    Head,
+    Body,
+    Legs
+}
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Move")]
@@ -14,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     [Header("Die")]
     [SerializeField] Vector2 deathKick = new Vector2(0, 10f);
+
+    [SerializeField] PlayerParts playerPart;
 
     Vector2 moveInput;
     Animator animator;
@@ -42,7 +51,24 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        GameSession gameSession = FindFirstObjectByType<GameSession>();
+        DamageReceiver[] receivers = GetComponentsInChildren<DamageReceiver>();
+
+        if (gameSession.savedHealthAmount >= 0)
+        {
+            // Distribute saved health evenly
+            int healthPerReceiver = gameSession.savedHealthAmount / receivers.Length;
+            foreach (DamageReceiver receiver in receivers)
+            {
+                receiver.Heal(-receiver.GetHelth()); // Reset to 0
+                receiver.Heal(healthPerReceiver);
+            }
+
+            // Reset after applying
+            gameSession.savedHealthAmount = -1;
+        }
     }
+
     // Update is called once per frame
     void Update()
     {

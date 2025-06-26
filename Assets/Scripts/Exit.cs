@@ -10,6 +10,7 @@ public class Exit : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -31,7 +32,8 @@ public class Exit : MonoBehaviour
         {
             isEnemiesAlive = false;
             spriteRenderer.color = Color.white;
-        } else
+        }
+        else
         {
             isEnemiesAlive = true;
             spriteRenderer.color = Color.gray;

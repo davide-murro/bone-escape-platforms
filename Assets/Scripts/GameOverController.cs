@@ -35,6 +35,7 @@ public class GameOverController : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
     // when play again button is clicked
     public void OnPlayAgainClick()
     {
@@ -55,7 +56,8 @@ public class GameOverController : MonoBehaviour
                 player.GetComponent<Animator>().SetTrigger("glory");
                 enemy.GetComponent<Animator>().SetTrigger("die");
                 enemy.GetComponent<SlimeController>().enabled = false;
-            } else
+            }
+            else
             {
                 player.GetComponent<Animator>().SetTrigger("die");
             }
